@@ -16,5 +16,5 @@ Run as boot jar, docker TBD.
 ## Command list (BotFather format)
 
 ```
-
+help - send available command list
 ```
