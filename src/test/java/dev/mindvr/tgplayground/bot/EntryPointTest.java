@@ -1,5 +1,6 @@
 package dev.mindvr.tgplayground.bot;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.mindvr.tgplayground.command.Command;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,6 +23,9 @@ class EntryPointTest {
     @Mock
     Update mockUpdate;
 
+    @Mock
+    ObjectMapper objectMapper;
+
 
     @InjectMocks
     EntryPoint entryPoint;
@@ -33,7 +37,7 @@ class EntryPointTest {
 
         entryPoint.onUpdateReceived(mockUpdate);
 
-        verify(mockCommand, times(1)).handle(eq(mockUpdate), eq(entryPoint));
+        verify(mockCommand, times(1)).handle(eq(mockUpdate), eq(entryPoint.wrapper));
     }
 
     @Test

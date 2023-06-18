@@ -17,4 +17,5 @@ Run as boot jar, docker TBD.
 
 ```
 help - send available command list
+with-buttons - buttons in message and some interactivity
 ```
