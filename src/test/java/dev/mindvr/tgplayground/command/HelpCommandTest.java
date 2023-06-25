@@ -1,9 +1,9 @@
 package dev.mindvr.tgplayground.command;
 
+import dev.mindvr.tgplayground.bot.TgBot;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -29,6 +29,12 @@ class HelpCommandTest {
     }
 
     @Test
+    void testIsApplicable_not() {
+        new UpdateCollection().regularUpdates()
+                .forEach(update -> assertFalse(command.isApplicable(update)));
+    }
+
+    @Test
     void testIsApplicable() {
         message.setText("hello");
         assertFalse(command.isApplicable(update));
@@ -37,10 +43,10 @@ class HelpCommandTest {
     }
 
     @Test
-    void testHandle() throws Exception {
+    void testHandle() {
         chat.setId(42L);
 
-        TelegramLongPollingBot bot = mock(TelegramLongPollingBot.class);
+        TgBot bot = mock(TgBot.class);
         ArgumentCaptor<SendMessage> captor = ArgumentCaptor.forClass(SendMessage.class);
         command.handle(update, bot);
         verify(bot).execute(captor.capture());

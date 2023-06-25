@@ -1,10 +1,10 @@
 package dev.mindvr.tgplayground.command;
 
-import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import dev.mindvr.tgplayground.bot.TgBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 public interface Command {
     boolean isApplicable(Update update);
 
-    void handle(Update update, TelegramLongPollingBot bot);
+    void handle(Update update, TgBot bot);
 }
