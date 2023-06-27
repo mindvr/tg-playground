@@ -3,19 +3,21 @@ Java Telegram Bot demos
 
 ## How to run
 
-Register bot at [BotFather](https://t.me/BotFather). 
-Set environment variables:
+### BotFather
 
-| Variable | Value        |
-|----------|--------------|
-| TG_NAME  | bot username |
-| TG_TOKEN | bot token    |
+Register bot at [BotFather](https://t.me/BotFather).
 
-Run as boot jar, docker TBD. 
-
-## Command list (BotFather format)
+#### Command list (BotFather format)
 
 ```
 help - send available command list
 with-buttons - buttons in message and some interactivity
 ```
+
+### Building
+
+`docker build -t tg-playground .`
+
+### Running
+
+`docker run -e TG_TOKEN={$TG_TOKEN} -e TG_NAME={$TG_NAME} tg-playground` 
