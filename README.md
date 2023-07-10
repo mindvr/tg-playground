@@ -20,4 +20,17 @@ with-buttons - buttons in message and some interactivity
 
 ### Running
 
-`docker run -e TG_TOKEN={$TG_TOKEN} -e TG_NAME={$TG_NAME} tg-playground` 
+create `secrets.env` with contents
+
+```env
+TG_TOKEN=
+TG_NAME=
+```
+
+run
+```shell
+docker compose up
+
+#or
+docker compose up -d
+```

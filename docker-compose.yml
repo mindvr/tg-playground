@@ -1,0 +1,10 @@
+services:
+  tg-playground:
+    build:
+      context: .
+    deploy:
+      resources:
+        limits:
+          memory: 12M
+    env_file:
+      - ./secrets.env
