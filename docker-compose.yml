@@ -5,6 +5,6 @@ services:
     deploy:
       resources:
         limits:
-          memory: 12M
+          memory: 128M
     env_file:
       - ./secrets.env
