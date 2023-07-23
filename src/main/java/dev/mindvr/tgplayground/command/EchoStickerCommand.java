@@ -1,6 +1,6 @@
 package dev.mindvr.tgplayground.command;
 
-import dev.mindvr.tgplayground.bot.TgBot;
+import dev.mindvr.tgplayground.bot.UpdateContext;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -12,16 +12,17 @@ import java.util.Optional;
 @Component
 public class EchoStickerCommand implements Command {
     @Override
-    public boolean isApplicable(Update update) {
+    public boolean isApplicable(UpdateContext update) {
         return Optional.of(update)
+                .map(UpdateContext::getUpdate)
                 .map(Update::getMessage)
                 .map(Message::getSticker)
                 .isPresent();
     }
 
     @Override
-    public void handle(Update update, TgBot bot) {
-        Sticker s = update.getMessage().getSticker();
+    public void handle(UpdateContext update) {
+        Sticker s = update.getUpdate().getMessage().getSticker();
         String message = """
                 %s sticker type: %s
                 from %s file_unique_id: %s
@@ -30,9 +31,9 @@ public class EchoStickerCommand implements Command {
                 s.getSetName(), s.getFileUniqueId(),
                 s.getFileId());
         SendMessage reply = SendMessage.builder()
-                .chatId(update.getMessage().getFrom().getId())
+                .chatId(update.getUpdate().getMessage().getFrom().getId())
                 .text(message)
                 .build();
-        bot.execute(reply);
+        update.getBot().execute(reply);
     }
 }

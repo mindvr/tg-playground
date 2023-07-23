@@ -24,18 +24,21 @@ public class EntryPoint extends TelegramLongPollingBot {
     private final ObjectMapper objectMapper;
     @Setter
     private List<Command> commands;
+    private final UpdateContextFactory contextFactory;
     final TgBot wrapper;
 
     @Autowired
     public EntryPoint(
             @Value("${tg.token:}") String token,
             @Value("${tg.name:}") String name,
+            ObjectMapper objectMapper,
             List<Command> commands,
-            ObjectMapper objectMapper) {
+            UpdateContextFactory contextFactory) {
         this.token = token;
         this.name = name;
-        this.commands = commands;
         this.objectMapper = objectMapper;
+        this.commands = commands;
+        this.contextFactory = contextFactory;
         this.wrapper = new TgBot(this);
     }
 
@@ -48,10 +51,11 @@ public class EntryPoint extends TelegramLongPollingBot {
     @SneakyThrows
     public void onUpdateReceived(Update update) {
         log.info("{}", objectMapper.writeValueAsString(update));
+        UpdateContext context = contextFactory.build(update, this.wrapper);
         commands.stream()
-                .filter(command -> command.isApplicable(update))
+                .filter(command -> command.isApplicable(context))
                 .findAny()
-                .ifPresent(command -> command.handle(update, wrapper));
+                .ifPresent(command -> command.handle(context));
     }
 
     @Override

@@ -1,6 +1,6 @@
 package dev.mindvr.tgplayground.command.buttons.reply;
 
-import dev.mindvr.tgplayground.bot.TgBot;
+import dev.mindvr.tgplayground.bot.UpdateContext;
 import dev.mindvr.tgplayground.command.Command;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
@@ -13,8 +13,9 @@ import java.util.Optional;
 @Component
 public class WithButtonsCallback implements Command {
     @Override
-    public boolean isApplicable(Update update) {
+    public boolean isApplicable(UpdateContext update) {
         return Optional.of(update)
+                .map(UpdateContext::getUpdate)
                 .map(Update::getCallbackQuery)
                 .map(CallbackQuery::getData)
                 .filter(data -> data.startsWith("/with_buttons:"))
@@ -22,8 +23,8 @@ public class WithButtonsCallback implements Command {
     }
 
     @Override
-    public void handle(Update update, TgBot bot) {
-        CallbackQuery callback = update.getCallbackQuery();
+    public void handle(UpdateContext update) {
+        CallbackQuery callback = update.getUpdate().getCallbackQuery();
 
         Message message = callback.getMessage();
         WithButtonsMessage parsed = WithButtonsMessage.fromMessage(message);
@@ -40,7 +41,7 @@ public class WithButtonsCallback implements Command {
         editMessage.setChatId(callback.getMessage().getChatId());
         editMessage.setMessageId(callback.getMessage().getMessageId());
 
-        bot.execute(editMessage);
+        update.getBot().execute(editMessage);
     }
 
 }
