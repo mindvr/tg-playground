@@ -2,6 +2,7 @@ package dev.mindvr.tgplayground.bot;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.mindvr.tgplayground.command.Command;
+import dev.mindvr.tgplayground.persistence.UpdateRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -25,6 +26,7 @@ public class EntryPoint extends TelegramLongPollingBot {
     @Setter
     private List<Command> commands;
     private final UpdateContextFactory contextFactory;
+    private final UpdateRepository updateRepository;
     final TgBot wrapper;
 
     @Autowired
@@ -33,12 +35,14 @@ public class EntryPoint extends TelegramLongPollingBot {
             @Value("${tg.name:}") String name,
             ObjectMapper objectMapper,
             List<Command> commands,
-            UpdateContextFactory contextFactory) {
+            UpdateContextFactory contextFactory,
+            UpdateRepository updateRepository) {
         this.token = token;
         this.name = name;
         this.objectMapper = objectMapper;
         this.commands = commands;
         this.contextFactory = contextFactory;
+        this.updateRepository = updateRepository;
         this.wrapper = new TgBot(this);
     }
 
@@ -51,6 +55,7 @@ public class EntryPoint extends TelegramLongPollingBot {
     @SneakyThrows
     public void onUpdateReceived(Update update) {
         log.info("{}", objectMapper.writeValueAsString(update));
+        update = updateRepository.save(update);
         UpdateContext context = contextFactory.build(update, this.wrapper);
         commands.stream()
                 .filter(command -> command.isApplicable(context))
