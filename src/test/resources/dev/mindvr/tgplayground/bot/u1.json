@@ -1,0 +1,23 @@
+{
+  "update_id": 909384210,
+  "message": {
+    "message_id": 76,
+    "from": {
+      "id": 98760000,
+      "first_name": "first_name",
+      "is_bot": false,
+      "last_name": "last_name",
+      "username": "username",
+      "language_code": "en"
+    },
+    "date": 1690394994,
+    "chat": {
+      "id": 98760000,
+      "type": "private",
+      "first_name": "first_name",
+      "last_name": "last_name",
+      "username": "username"
+    },
+    "text": "1"
+  }
+}
