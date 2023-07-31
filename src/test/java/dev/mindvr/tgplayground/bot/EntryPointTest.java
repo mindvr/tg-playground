@@ -2,6 +2,7 @@ package dev.mindvr.tgplayground.bot;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.mindvr.tgplayground.command.Command;
+import dev.mindvr.tgplayground.persistence.UpdateRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,6 +26,9 @@ class EntryPointTest {
 
     @Mock
     ObjectMapper objectMapper;
+
+    @Mock
+    UpdateRepository updateRepository;
 
     @Mock
     UpdateContextFactory contextFactory;
