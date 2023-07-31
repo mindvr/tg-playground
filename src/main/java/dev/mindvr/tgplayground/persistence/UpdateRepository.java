@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -13,5 +14,9 @@ public class UpdateRepository {
     public Update save(Update update) {
         updates.put(update.getUpdateId(), update);
         return update;
+    }
+
+    public List<Update> findAll() {
+        return List.copyOf(updates.values());
     }
 }
