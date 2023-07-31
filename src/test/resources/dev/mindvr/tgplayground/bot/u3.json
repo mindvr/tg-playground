@@ -3,7 +3,7 @@
   "message": {
     "message_id": 78,
     "from": {
-      "id": 98760000,
+      "id": 98760001,
       "first_name": "first_name",
       "is_bot": false,
       "last_name": "last_name",
@@ -12,7 +12,7 @@
     },
     "date": 1690394995,
     "chat": {
-      "id": 98760000,
+      "id": 98760001,
       "type": "private",
       "first_name": "first_name",
       "last_name": "last_name",
