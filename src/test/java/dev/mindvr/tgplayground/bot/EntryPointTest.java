@@ -2,6 +2,7 @@ package dev.mindvr.tgplayground.bot;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.mindvr.tgplayground.command.Command;
+import dev.mindvr.tgplayground.persistence.UpdateRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -26,6 +27,12 @@ class EntryPointTest {
     @Mock
     ObjectMapper objectMapper;
 
+    @Mock
+    UpdateRepository updateRepository;
+
+    @Mock
+    UpdateContextFactory contextFactory;
+
 
     @InjectMocks
     EntryPoint entryPoint;
@@ -37,7 +44,7 @@ class EntryPointTest {
 
         entryPoint.onUpdateReceived(mockUpdate);
 
-        verify(mockCommand, times(1)).handle(eq(mockUpdate), eq(entryPoint.wrapper));
+        verify(mockCommand, times(1)).handle(any());
     }
 
     @Test
@@ -47,6 +54,6 @@ class EntryPointTest {
 
         entryPoint.onUpdateReceived(mockUpdate);
 
-        verify(mockCommand, never()).handle(any(), any());
+        verify(mockCommand, never()).handle(any());
     }
 }

@@ -1,6 +1,7 @@
 package dev.mindvr.tgplayground.command;
 
 import dev.mindvr.tgplayground.bot.TgBot;
+import dev.mindvr.tgplayground.bot.UpdateContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -14,6 +15,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 class HelpCommandTest {
+    UpdateContext context = new UpdateContext();
     HelpCommand command = new HelpCommand();
     String text = "help-message";
     Update update = new Update();
@@ -23,6 +25,7 @@ class HelpCommandTest {
 
     @BeforeEach
     void setup() {
+        context.setUpdate(update);
         command.setHelp(text);
         update.setMessage(message);
         message.setChat(chat);
@@ -31,15 +34,21 @@ class HelpCommandTest {
     @Test
     void testIsApplicable_not() {
         new UpdateCollection().regularUpdates()
+                .stream()
+                .map(update -> {
+                    var context = new UpdateContext();
+                    context.setUpdate(update);
+                    return context;
+                })
                 .forEach(update -> assertFalse(command.isApplicable(update)));
     }
 
     @Test
     void testIsApplicable() {
         message.setText("hello");
-        assertFalse(command.isApplicable(update));
+        assertFalse(command.isApplicable(context));
         message.setText("/help");
-        assertTrue(command.isApplicable(update));
+        assertTrue(command.isApplicable(context));
     }
 
     @Test
@@ -47,8 +56,9 @@ class HelpCommandTest {
         chat.setId(42L);
 
         TgBot bot = mock(TgBot.class);
+        context.setBot(bot);
         ArgumentCaptor<SendMessage> captor = ArgumentCaptor.forClass(SendMessage.class);
-        command.handle(update, bot);
+        command.handle(context);
         verify(bot).execute(captor.capture());
         SendMessage sentMessage = captor.getValue();
 

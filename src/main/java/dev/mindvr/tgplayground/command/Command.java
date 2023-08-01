@@ -1,10 +1,9 @@
 package dev.mindvr.tgplayground.command;
 
-import dev.mindvr.tgplayground.bot.TgBot;
-import org.telegram.telegrambots.meta.api.objects.Update;
+import dev.mindvr.tgplayground.bot.UpdateContext;
 
 public interface Command {
-    boolean isApplicable(Update update);
+    boolean isApplicable(UpdateContext update);
 
-    void handle(Update update, TgBot bot);
+    void handle(UpdateContext update);
 }

@@ -1,6 +1,6 @@
 package dev.mindvr.tgplayground.command;
 
-import dev.mindvr.tgplayground.bot.TgBot;
+import dev.mindvr.tgplayground.bot.UpdateContext;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -19,8 +19,9 @@ public class HelpCommand implements Command {
             """;
 
     @Override
-    public boolean isApplicable(Update update) {
+    public boolean isApplicable(UpdateContext update) {
         return Optional.of(update)
+                .map(UpdateContext::getUpdate)
                 .map(Update::getMessage)
                 .map(Message::getText)
                 .filter(text -> text.startsWith("/help"))
@@ -28,11 +29,11 @@ public class HelpCommand implements Command {
     }
 
     @Override
-    public void handle(Update update, TgBot bot) {
+    public void handle(UpdateContext update) {
         var reply = SendMessage.builder()
-                .chatId(update.getMessage().getChatId().toString())
+                .chatId(update.getUpdate().getMessage().getChatId().toString())
                 .text(help)
                 .build();
-        bot.execute(reply);
+        update.getBot().execute(reply);
     }
 }
