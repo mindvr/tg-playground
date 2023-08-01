@@ -12,6 +12,7 @@ Register bot at [BotFather](https://t.me/BotFather).
 ```
 help - send available command list
 with-buttons - buttons in message and some interactivity
+describe - describes object, currently supported: sticker
 ```
 
 ### Building
